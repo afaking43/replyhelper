@@ -25,22 +25,32 @@ from web_admin.app import set_telethon_getter
 def setup_logging() -> None:
     import io
     os.makedirs("logs", exist_ok=True)
+    
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    
+    # Clear existing handlers
+    logger.handlers.clear()
+    
     stdout_handler = logging.StreamHandler(
         io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
         if hasattr(sys.stdout, "buffer")
         else sys.stdout
     )
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s %(name)s: %(message)s",
-        handlers=[
-            stdout_handler,
-            logging.FileHandler("logs/app.log", encoding="utf-8"),
-        ],
-    )
+    stdout_handler.setLevel(logging.INFO)
+    stdout_handler.setFormatter(logging.Formatter("%(asctime)s %(name)s: %(message)s"))
+    
+    file_handler = logging.FileHandler("logs/app.log", encoding="utf-8")
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(logging.Formatter("%(asctime)s %(name)s: %(message)s"))
+    
+    logger.addHandler(stdout_handler)
+    logger.addHandler(file_handler)
+    
     logging.getLogger("telethon").setLevel(logging.WARNING)
     logging.getLogger("aiogram").setLevel(logging.WARNING)
     logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("uvicorn").setLevel(logging.WARNING)
 
 
 async def start_web_admin() -> None:
