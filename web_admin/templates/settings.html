@@ -20,6 +20,21 @@
     </div>
     <div class="col-lg-6">
         <div class="card">
+            <div class="card-header"><h3 class="card-title">Смена пароля</h3></div>
+            <div class="card-body">
+                <p class="text-muted">Изменить пароль для входа в веб-админку.</p>
+                <form method="post" action="/settings/change-password">
+                    <div class="mb-3">
+                        <label class="form-label">Новый пароль</label>
+                        <input type="password" name="new_password" class="form-control" placeholder="Введите новый пароль" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сменить пароль</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
             <div class="card-header"><h3 class="card-title">Резервное копирование</h3></div>
             <div class="card-body">
                 <p class="text-muted">Создайте резервную копию всех настроек и данных.</p>

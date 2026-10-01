@@ -19,7 +19,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from config import config
-from storage.settings import settings_store
+from storage.settings import settings_store, _write_env_value
 from telegram.handler import rebuild_chat_owner_map
 from admin_bot.bot import restart_admin_bot
 from web_admin.ai_matcher import find_matches
@@ -600,6 +600,12 @@ async def clear_all_logs(request: Request):
 @app.post("/settings/set-admin")
 async def set_admin_user(request: Request, admin_user_id: int = Form(...)):
     settings_store.set_admin_user_id(admin_user_id)
+    return RedirectResponse("/settings", status_code=302)
+
+
+@app.post("/settings/change-password")
+async def change_password(request: Request, new_password: str = Form(...)):
+    _write_env_value("WEB_ADMIN_PASSWORD", new_password)
     return RedirectResponse("/settings", status_code=302)
 
 
