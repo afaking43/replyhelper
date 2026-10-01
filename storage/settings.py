@@ -1178,6 +1178,21 @@ class SettingsStore:
     def save_bot_token(self, token: str) -> None:
         _write_env_value("ADMIN_BOT_TOKEN", token.strip())
 
+    def get_admin_user_id(self) -> int:
+        conn = _get_conn()
+        row = conn.execute("SELECT value FROM global_settings WHERE key='admin_user_id'").fetchone()
+        if row and row[0]:
+            return int(row[0])
+        return 0
+
+    def set_admin_user_id(self, user_id: int) -> None:
+        conn = _get_conn()
+        conn.execute(
+            "INSERT OR REPLACE INTO global_settings (key, value) VALUES ('admin_user_id', ?)",
+            (str(user_id),)
+        )
+        conn.commit()
+
     def update_user_activity(self, user_id: int) -> None:
         conn = _get_conn()
         now = datetime.now().isoformat()

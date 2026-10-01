@@ -75,9 +75,9 @@ class Config:
         ).strip()
     )
 
-    admin_user_id: int = field(
-        default_factory=lambda: _get_int("ADMIN_USER_ID", 0)
-    )
+    @property
+    def admin_user_id(self) -> int:
+        return settings_store.get_admin_user_id()
 
     # Behavior & Scenario
     auto_reply: bool = field(
@@ -160,9 +160,6 @@ class Config:
 
         if not self.admin_bot_token:
             missing.append("ADMIN_BOT_TOKEN")
-
-        if not self.admin_user_id:
-            missing.append("ADMIN_USER_ID")
 
         if missing:
             logging.getLogger("config").warning(

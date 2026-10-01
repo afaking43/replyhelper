@@ -64,7 +64,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             return await call_next(request)
         if path.startswith("/webapp") or path.startswith("/api/webapp"):
             return await call_next(request)
-        if path in ("/", "/app") or path.startswith("/auth/"):
+        if path in ("/", "/app", "/admin") or path.startswith("/auth/"):
             return await call_next(request)
         if path in ("/api/templates/search", "/api/templates/all"):
             return await call_next(request)
@@ -96,6 +96,11 @@ async def login_submit(request: Request, login: str = Form(...), password: str =
 async def logout(request: Request):
     request.session.clear()
     return RedirectResponse("/login", status_code=302)
+
+
+@app.get("/admin")
+async def admin_redirect(request: Request):
+    return RedirectResponse("/dashboard", status_code=302)
 
 
 # ── Telegram Login (public website) ────────────────────────────
@@ -562,10 +567,12 @@ async def export_logs(request: Request):
 @app.get("/settings", response_class=HTMLResponse)
 async def settings_page(request: Request):
     user_count = len(settings_store.get_all_user_ids())
+    admin_user_id = settings_store.get_admin_user_id()
     return _render(
         request, "settings.html",
         active_page="settings", page_title="Системные настройки",
         user_count=user_count,
+        admin_user_id=admin_user_id,
     )
 
 
@@ -587,6 +594,12 @@ async def clear_analytics(request: Request):
 @app.post("/settings/clear-logs")
 async def clear_all_logs(request: Request):
     settings_store.clear_all_error_logs()
+    return RedirectResponse("/settings", status_code=302)
+
+
+@app.post("/settings/set-admin")
+async def set_admin_user(request: Request, admin_user_id: int = Form(...)):
+    settings_store.set_admin_user_id(admin_user_id)
     return RedirectResponse("/settings", status_code=302)
 
 

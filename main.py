@@ -44,10 +44,11 @@ def setup_logging() -> None:
 
 async def start_web_admin() -> None:
     """Запустить веб-админ-панель."""
+    port = int(os.getenv("PORT", config.web_port))
     web_config = uvicorn.Config(
         "web_admin.app:app",
         host="0.0.0.0",
-        port=config.web_port,
+        port=port,
         log_level="info",
     )
     server = uvicorn.Server(web_config)
@@ -137,27 +138,28 @@ async def main() -> None:
 
     bot_token = settings_store.get_bot_token() or config.admin_bot_token
 
-    if bot_token and config.admin_user_id:
+    if bot_token:
         try:
             notifier = Bot(token=bot_token)
-            state_label = (
-                "🟢 работает"
-                if settings_store.assistant_enabled
-                else "🔴 выключен"
-            )
-            await notifier.send_message(
-                config.admin_user_id,
-                "🚀 <b>Проект запущен</b>\n"
-                f"Помощник: {state_label}\n"
-                f"Активных аккаунтов: {len(user_clients)}\n"
-                f"Пользователей: {len(settings_store.get_activated_credentials())}",
-                parse_mode="HTML",
-            )
+            if config.admin_user_id:
+                state_label = (
+                    "🟢 работает"
+                    if settings_store.assistant_enabled
+                    else "🔴 выключен"
+                )
+                await notifier.send_message(
+                    config.admin_user_id,
+                    "🚀 <b>Проект запущен</b>\n"
+                    f"Помощник: {state_label}\n"
+                    f"Активных аккаунтов: {len(user_clients)}\n"
+                    f"Пользователей: {len(settings_store.get_activated_credentials())}",
+                    parse_mode="HTML",
+                )
             await notifier.session.close()
         except Exception as exc:
             logger.warning("Failed to send startup notification: %s", exc)
     else:
-        logger.warning("Admin bot credentials not set — skipping startup notification")
+        logger.warning("Admin bot token not set — skipping startup notification")
 
     set_telethon_getter(get_client)
 
