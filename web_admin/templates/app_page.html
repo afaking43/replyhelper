@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReplyHelper — Справочник</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2481cc;
+            --primary-dark: #1a5f99;
+            --bg: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text: #1a1a2e;
+            --text-muted: #6c757d;
+            --border: #e9ecef;
+            --success: #4caf50;
+            --danger: #e53935;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--border);
+        }
+
+        /* Main Layout */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Search Section */
+        .search-section {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-title .ai-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            background: color-mix(in srgb, var(--primary) 10%, transparent);
+            color: var(--primary);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            max-height: 200px;
+            outline: none;
+            transition: border-color 0.2s;
+            line-height: 1.5;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* Matches */
+        .matches-section {
+            margin-top: 24px;
+        }
+
+        .matches-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .matches-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .matches-count {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .match-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 10px;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .match-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .match-card.top-match {
+            border-color: var(--primary);
+            background: color-mix(in srgb, var(--primary) 3%, var(--bg));
+        }
+
+        .match-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .match-question {
+            font-size: 14px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .match-score {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary);
+            background: color-mix(in srgb, var(--primary) 12%, transparent);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .match-answer {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .match-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+        }
+
+        .fav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .fav-btn:hover, .fav-btn.active {
+            color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .no-matches {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .panel {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .panel-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .panel-action {
+            font-size: 12px;
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .panel-action:hover {
+            text-decoration: underline;
+        }
+
+        /* Template List */
+        .template-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .template-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .template-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .template-item-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .template-item-title {
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .template-item-preview {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .template-item-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .template-item:hover .template-item-actions {
+            opacity: 1;
+        }
+
+        .icon-btn {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .icon-btn:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .icon-btn.danger:hover {
+            background: color-mix(in srgb, var(--danger) 10%, transparent);
+            color: var(--danger);
+        }
+
+        .icon-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            padding: 24px;
+            margin: 20px;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-save {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-cancel {
+            background: var(--bg-secondary);
+            color: var(--text);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: var(--bg-secondary);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .tab.active {
+            background: var(--bg);
+            color: var(--text);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">R</div>
+                ReplyHelper
+            </a>
+            <div class="user-info">
+                <span class="user-name" id="userName"></span>
+                <a href="/logout" class="logout-btn">Выйти</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="search-section">
+            <div class="search-title">
+                Поиск ответа
+                <span class="ai-badge">AI</span>
+            </div>
+            <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <textarea class="search-input" id="searchInput" placeholder="Вставьте сообщение клиента..."></textarea>
+            </div>
+
+            <div class="matches-section" id="matchesSection" style="display:none">
+                <div class="matches-header">
+                    <span class="matches-title">Подходящие ответы</span>
+                    <span class="matches-count" id="matchesCount"></span>
+                </div>
+                <div id="matchesList"></div>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Мои шаблоны</span>
+                    <span class="panel-action" id="addTemplateBtn">+ Добавить</span>
+                </div>
+                <div class="tabs">
+                    <button class="tab active" data-tab="personal">Личные</button>
+                    <button class="tab" data-tab="all">Общие</button>
+                    <button class="tab" data-tab="favorites">Избранные</button>
+                </div>
+                <div class="template-list" id="templateList"></div>
+            </div>
+        </aside>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Новый шаблон</h3>
+                <button class="modal-close" id="modalClose">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="form-group">
+                <label>Название (вопрос клиента)</label>
+                <input type="text" id="inputQuestion" placeholder="Например: Сколько стоит?">
+            </div>
+            <div class="form-group">
+                <label>Ответ</label>
+                <textarea id="inputAnswer" placeholder="Текст ответа..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" id="btnCancel">Отмена</button>
+                <button class="btn-save" id="btnSave">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const userId = {{ user_id }};
+        const userName = "{{ user_name }}";
+        document.getElementById('userName').textContent = userName;
+
+        let allTemplates = [];
+        let personalTemplates = [];
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        let currentTab = 'personal';
+        let editingId = null;
+
+        async function loadTemplates() {
+            try {
+                const [allResp, personalResp] = await Promise.all([
+                    fetch('/api/templates/all'),
+                    fetch(`/api/webapp/${userId}/templates`)
+                ]);
+                allTemplates = await allResp.json();
+                personalTemplates = await personalResp.json();
+                renderTemplateList();
+            } catch (e) {
+                console.error('Failed to load templates', e);
+            }
+        }
+
+        function getCurrentTemplates() {
+            if (currentTab === 'personal') return personalTemplates;
+            if (currentTab === 'all') return allTemplates;
+            if (currentTab === 'favorites') {
+                return allTemplates.filter(t => favorites.includes(t.id));
+            }
+            return [];
+        }
+
+        function renderTemplateList() {
+            const list = document.getElementById('templateList');
+            const templates = getCurrentTemplates();
+
+            if (templates.length === 0) {
+                list.innerHTML = '<div class="empty-state">Нет шаблонов</div>';
+                return;
+            }
+
+            list.innerHTML = templates.map(tpl => `
+                <div class="template-item" data-id="${tpl.id}">
+                    <div class="template-item-content">
+                        <div class="template-item-title">${escapeHtml(tpl.question || 'Без названия')}</div>
+                        <div class="template-item-preview">${escapeHtml((tpl.answer || '').substring(0, 50))}</div>
+                    </div>
+                    ${currentTab === 'personal' ? `
+                    <div class="template-item-actions">
+                        <button class="icon-btn edit-btn" data-id="${tpl.id}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                        </button>
+                        <button class="icon-btn danger delete-btn" data-id="${tpl.id}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                        </button>
+                    </div>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            list.querySelectorAll('.template-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (e.target.closest('.icon-btn')) return;
+                    const id = parseInt(item.dataset.id);
+                    const tpl = [...allTemplates, ...personalTemplates].find(t => t.id === id);
+                    if (tpl) {
+                        document.getElementById('searchInput').value = tpl.question || '';
+                        searchTemplates();
+                    }
+                });
+            });
+
+            list.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.dataset.id);
+                    const tpl = personalTemplates.find(t => t.id === id);
+                    if (tpl) openEditModal(tpl);
+                });
+            });
+
+            list.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.dataset.id);
+                    if (confirm('Удалить этот шаблон?')) {
+                        deleteTemplate(id);
+                    }
+                });
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function searchTemplates() {
+            const input = document.getElementById('searchInput').value.trim();
+            const section = document.getElementById('matchesSection');
+            const list = document.getElementById('matchesList');
+            const count = document.getElementById('matchesCount');
+
+            if (!input) {
+                section.style.display = 'none';
+                return;
+            }
+
+            try {
+                const resp = await fetch('/api/templates/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: input })
+                });
+                const matches = await resp.json();
+
+                section.style.display = 'block';
+                count.textContent = `${matches.length} найдено`;
+
+                if (matches.length === 0) {
+                    list.innerHTML = '<div class="no-matches">Ничего не найдено</div>';
+                    return;
+                }
+
+                list.innerHTML = matches.map((m, i) => `
+                    <div class="match-card ${i === 0 ? 'top-match' : ''}">
+                        <div class="match-header">
+                            <span class="match-question">${escapeHtml(m.question || 'Без названия')}</span>
+                            <span class="match-score">${Math.round(m.score * 100)}%</span>
+                        </div>
+                        <div class="match-answer">${escapeHtml(m.answer || '')}</div>
+                        <div class="match-actions">
+                            <button class="copy-btn" data-answer="${escapeHtml(m.answer || '')}">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Копировать
+                            </button>
+                            <button class="fav-btn ${favorites.includes(m.id) ? 'active' : ''}" data-id="${m.id}">
+                                <svg viewBox="0 0 24 24" fill="${favorites.includes(m.id) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                list.querySelectorAll('.copy-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(btn.dataset.answer).then(() => {
+                            btn.classList.add('copied');
+                            btn.innerHTML = 'Скопировано!';
+                            setTimeout(() => {
+                                btn.classList.remove('copied');
+                                btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Копировать`;
+                            }, 1500);
+                        });
+                    });
+                });
+
+                list.querySelectorAll('.fav-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const id = parseInt(btn.dataset.id);
+                        toggleFavorite(id);
+                        btn.classList.toggle('active');
+                        const svg = btn.querySelector('svg');
+                        svg.setAttribute('fill', btn.classList.contains('active') ? 'currentColor' : 'none');
+                    });
+                });
+            } catch (e) {
+                console.error('Search failed', e);
+            }
+        }
+
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(f => f !== id);
+            } else {
+                favorites.push(id);
+            }
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            if (currentTab === 'favorites') renderTemplateList();
+        }
+
+        // Modal
+        const modalOverlay = document.getElementById('modalOverlay');
+        const inputQuestion = document.getElementById('inputQuestion');
+        const inputAnswer = document.getElementById('inputAnswer');
+        const modalTitle = document.getElementById('modalTitle');
+
+        function openAddModal() {
+            editingId = null;
+            modalTitle.textContent = 'Новый шаблон';
+            inputQuestion.value = '';
+            inputAnswer.value = '';
+            modalOverlay.classList.add('active');
+        }
+
+        function openEditModal(tpl) {
+            editingId = tpl.id;
+            modalTitle.textContent = 'Редактировать шаблон';
+            inputQuestion.value = tpl.question || '';
+            inputAnswer.value = tpl.answer || '';
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            editingId = null;
+        }
+
+        async function saveTemplate() {
+            const question = inputQuestion.value.trim();
+            const answer = inputAnswer.value.trim();
+            if (!question && !answer) return;
+
+            const url = `/api/webapp/${userId}/templates`;
+            const method = editingId ? 'PUT' : 'POST';
+            const fetchUrl = editingId ? `${url}/${editingId}` : url;
+
+            try {
+                const resp = await fetch(fetchUrl, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question, answer })
+                });
+                if (!resp.ok) throw new Error('Failed to save');
+                closeModal();
+                await loadTemplates();
+            } catch (e) {
+                alert('Ошибка сохранения');
+            }
+        }
+
+        async function deleteTemplate(id) {
+            try {
+                const resp = await fetch(`/api/webapp/${userId}/templates/${id}`, {
+                    method: 'DELETE'
+                });
+                if (!resp.ok) throw new Error('Failed to delete');
+                await loadTemplates();
+            } catch (e) {
+                alert('Ошибка удаления');
+            }
+        }
+
+        // Event listeners
+        document.getElementById('addTemplateBtn').addEventListener('click', openAddModal);
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('btnCancel').addEventListener('click', closeModal);
+        document.getElementById('btnSave').addEventListener('click', saveTemplate);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentTab = tab.dataset.tab;
+                renderTemplateList();
+            });
+        });
+
+        let debounceTimer;
+        document.getElementById('searchInput').addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(searchTemplates, 300);
+        });
+
+        loadTemplates();
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Справочник — AI Bot Admin{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col">
+                <input type="text" name="q" class="form-control" placeholder="Поиск по названию..." value="{{ search }}">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary"><i class="ti ti-search"></i></button>
+                <a href="/library" class="btn btn-outline-secondary">Сбросить</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Записи справочника ({{ items|length }})</h3>
+                <div class="ms-auto">
+                    <a href="/library/export" class="btn btn-outline-secondary btn-sm"><i class="ti ti-download me-1"></i>Экспорт</a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if items %}
+                <div class="table-responsive">
+                    <table class="table table-vcenter">
+                        <thead><tr><th>ID</th><th>Название</th><th>Текст</th><th></th></tr></thead>
+                        <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>{{ item.id }}</td>
+                            <td><strong>{{ item.title }}</strong></td>
+                            <td class="text-muted">{{ (item.text or '')[:100] }}{% if (item.text or '')|length > 100 %}...{% endif %}</td>
+                            <td>
+                                <form method="post" action="/library/delete" class="d-inline">
+                                    <input type="hidden" name="lib_id" value="{{ item.id }}">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Удалить?')"><i class="ti ti-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted mb-0">Записей не найдено</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h3 class="card-title">Добавить запись</h3></div>
+            <div class="card-body">
+                <form method="post" action="/library/add">
+                    <div class="mb-3">
+                        <label class="form-label">Название</label>
+                        <input type="text" name="title" class="form-control" placeholder="Название текста" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Текст</label>
+                        <textarea name="text" class="form-control" rows="8" placeholder="Содержимое справочника..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

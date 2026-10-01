@@ -1,0 +1,502 @@
+{
+  "scenario_reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+  "allowed_chats": {},
+  "templates": [],
+  "tasks": [],
+  "greetings": [],
+  "thanks": [],
+  "next_template_id": 1,
+  "next_task_id": 1,
+  "next_greeting_id": 1,
+  "next_thanks_id": 1,
+  "assistant_enabled": true,
+  "thanks_reply": "",
+  "library": [],
+  "next_lib_id": 1,
+  "excluded_users": {},
+  "no_action_phrases": [],
+  "next_no_action_id": 1,
+  "standard_greetings": [],
+  "next_standard_greeting_id": 1,
+  "standard_thanks": [],
+  "next_standard_thanks_id": 1,
+  "standard_no_action_phrases": [],
+  "next_standard_no_action_id": 1,
+  "user_credentials": {
+    "5474309181": {
+      "user_id": 5474309181,
+      "phone": "+998935507797",
+      "api_id": 32994010,
+      "api_hash": "a74898f1738689406c7e70a564b152dd",
+      "activated": true
+    },
+    "1418838162": {
+      "user_id": 1418838162,
+      "phone": "+998994779737",
+      "api_id": 36347257,
+      "api_hash": "237dbc8acaf2e4aada2c2d67778c3756",
+      "activated": true
+    }
+  },
+  "user_data": {
+    "5474309181": {
+      "allowed_chats": {
+        "-5529361173": {
+          "title": "вв",
+          "type": "group",
+          "enabled": true
+        }
+      },
+      "excluded_users": {
+        "6128181307": {
+          "user_id": 6128181307,
+          "username": "",
+          "name": "Техническая поддержка Jobster.hr"
+        }
+      },
+      "templates": [],
+      "next_template_id": 1,
+      "greetings": [],
+      "next_greeting_id": 1,
+      "thanks": [],
+      "next_thanks_id": 1,
+      "thanks_reply": "",
+      "library": [],
+      "next_library_id": 1,
+      "tasks": [
+        {
+          "id": 1,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "abdulaziz",
+          "kind": "group",
+          "request": "вфыафыафвф",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "sent"
+        },
+        {
+          "id": 2,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "abdulaziz",
+          "kind": "group",
+          "request": "ываф афффффффффффф",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "sent"
+        },
+        {
+          "id": 3,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "abdulaziz",
+          "kind": "group",
+          "request": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "sent"
+        },
+        {
+          "id": 4,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "abdulaziz",
+          "kind": "group",
+          "request": "вфы",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "sent"
+        },
+        {
+          "id": 5,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "abdulaziz",
+          "kind": "group",
+          "request": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "sent"
+        },
+        {
+          "id": 6,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "abdulaziz",
+          "kind": "group",
+          "request": "Принято сейчас сделаем рассылку \nОтправьте пожалуста пост",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "sent"
+        }
+      ],
+      "next_task_id": 7,
+      "no_action_phrases": [],
+      "next_no_action_id": 1,
+      "assistant_enabled": true,
+      "last_menu_message_id": 775
+    },
+    "1418838162": {
+      "allowed_chats": {
+        "-5529361173": {
+          "title": "вв",
+          "type": "group",
+          "enabled": true
+        }
+      },
+      "excluded_users": {
+        "5474309181": {
+          "user_id": 5474309181,
+          "username": "",
+          "name": "Абдулазиз Файзуллох Jobster"
+        }
+      },
+      "templates": [
+        {
+          "id": 2,
+          "question": "рассылка",
+          "answer": "Принято сейчас сделаем рассылку \nОтправьте пожалуста пост"
+        }
+      ],
+      "next_template_id": 3,
+      "greetings": [
+        {
+          "id": 1,
+          "phrase": "Добрый день!",
+          "reply": "Добрый день!"
+        },
+        {
+          "id": 2,
+          "phrase": "добрый день",
+          "reply": "Добрый день!"
+        }
+      ],
+      "next_greeting_id": 3,
+      "thanks": [],
+      "next_thanks_id": 1,
+      "thanks_reply": "",
+      "library": [],
+      "next_library_id": 1,
+      "tasks": [
+        {
+          "id": 1,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "Jobster Sales Manager",
+          "kind": "group",
+          "request": "asdafgvafa",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "done"
+        },
+        {
+          "id": 2,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "Jobster Sales Manager",
+          "kind": "group",
+          "request": "вффыаф фавфаф афыафа",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "done"
+        },
+        {
+          "id": 3,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "Jobster Sales Manager",
+          "kind": "group",
+          "request": "Добрый день \nМожно уведомления",
+          "reply": "нет",
+          "status": "done"
+        },
+        {
+          "id": 4,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "Jobster Sales Manager",
+          "kind": "group",
+          "request": "фыаффффффффффф\nр\nр\nо\nо\nол\nл\nл\nл",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "sent"
+        },
+        {
+          "id": 5,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "Jobster Sales Manager",
+          "kind": "group",
+          "request": "фвфвфмтьшфоыарфщжывофл",
+          "reply": "Ваш запрос принят. \nМы изучим его и вернёмся к вам с обратной связью.\n➖\nSo'rovingiz qabul qilindi. \nUni o'rganib chiqamiz va sizga qayta aloqa beramiz",
+          "status": "sent"
+        },
+        {
+          "id": 6,
+          "chat_id": -5529361173,
+          "chat_title": "вв",
+          "client": "Jobster Sales Manager",
+          "kind": "group",
+          "request": "Рассылка\nрассылка",
+          "reply": "Принято сейчас сделаем рассылку \nОтправьте пожалуста пост",
+          "status": "sent"
+        }
+      ],
+      "next_task_id": 7,
+      "no_action_phrases": [],
+      "next_no_action_id": 1,
+      "assistant_enabled": true,
+      "last_menu_message_id": 776
+    }
+  },
+  "analytics": [
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T18:48:44.815320"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T18:49:02.973740"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T18:50:31.910016"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T18:50:50.167216"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T18:51:41.805536"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T18:51:59.960095"
+    },
+    {
+      "type": "manual_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T18:55:50.847254"
+    },
+    {
+      "type": "incoming",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T18:56:07.365448"
+    },
+    {
+      "type": "manual_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T18:59:43.028516"
+    },
+    {
+      "type": "incoming",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T18:59:43.320741"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T18:59:59.030249"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T19:00:01.458049"
+    },
+    {
+      "type": "manual_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:01:19.965465"
+    },
+    {
+      "type": "incoming",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T19:01:20.178968"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:01:28.261954"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T19:01:38.338389"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:02:37.976962"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:02:40.558225"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:02:41.417503"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:02:42.729447"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:02:42.828103"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:02:44.428264"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:02:44.431272"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:02:44.525000"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:02:45.214242"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:03:03.352270"
+    },
+    {
+      "type": "incoming",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T19:03:04.225510"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T19:03:22.505824"
+    },
+    {
+      "type": "manual_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:03:49.002933"
+    },
+    {
+      "type": "manual_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:03:56.925255"
+    },
+    {
+      "type": "manual_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:04:24.428376"
+    },
+    {
+      "type": "manual_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-27T19:04:43.395928"
+    },
+    {
+      "type": "incoming",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T19:04:43.724521"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T19:05:01.860374"
+    },
+    {
+      "type": "manual_reply",
+      "user_id": 5474309181,
+      "ts": "2026-09-27T19:05:27.991008"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-30T14:26:03.989806"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-30T14:26:22.094028"
+    },
+    {
+      "type": "incoming",
+      "user_id": 5474309181,
+      "ts": "2026-09-30T14:26:23.039720"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 5474309181,
+      "ts": "2026-09-30T14:26:41.172153"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-30T14:28:00.733654"
+    },
+    {
+      "type": "incoming",
+      "user_id": 1418838162,
+      "ts": "2026-09-30T14:28:03.493114"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 1418838162,
+      "ts": "2026-09-30T14:28:21.596344"
+    },
+    {
+      "type": "incoming",
+      "user_id": 5474309181,
+      "ts": "2026-09-30T14:28:22.531525"
+    },
+    {
+      "type": "auto_reply",
+      "user_id": 5474309181,
+      "ts": "2026-09-30T14:28:40.706561"
+    }
+  ],
+  "error_logs": [],
+  "next_error_log_id": 1,
+  "subscribers": [
+    {
+      "id": 1,
+      "telegram_id": 1418838162,
+      "name": "abdulaziz",
+      "username": "afa_king",
+      "source": "bot_start",
+      "status": "active",
+      "subscribed_at": "2026-09-27T15:29:01.698789",
+      "last_activity": "2026-09-30T14:28:22.529240"
+    },
+    {
+      "id": 2,
+      "telegram_id": 5474309181,
+      "name": "Абдулазиз Jobster",
+      "username": "TechSupport_Jobster",
+      "source": "bot_start",
+      "status": "active",
+      "subscribed_at": "2026-09-27T15:29:01.732065",
+      "last_activity": "2026-09-30T14:28:41.500488"
+    },
+    {
+      "id": 3,
+      "telegram_id": 6128181307,
+      "name": "Техническая поддержка Jobster.hr",
+      "username": "Jobster_techsupport",
+      "source": "bot_start",
+      "status": "active",
+      "subscribed_at": "2026-09-27T15:29:30.462592",
+      "last_activity": "2026-09-30T14:28:03.580404"
+    }
+  ],
+  "next_subscriber_id": 4,
+  "bot_token": "8997703604:AAG2K_GGVgF21lLbg3PeqkD3Sk-kAhtd8Ig"
+}

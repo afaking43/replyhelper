@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Ошибки и логи — AI Bot Admin{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <select name="level" class="form-select">
+                    <option value="">Все уровни</option>
+                    <option value="ERROR" {% if filter_level == 'ERROR' %}selected{% endif %}>ERROR</option>
+                    <option value="WARNING" {% if filter_level == 'WARNING' %}selected{% endif %}>WARNING</option>
+                    <option value="INFO" {% if filter_level == 'INFO' %}selected{% endif %}>INFO</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <select name="module" class="form-select">
+                    <option value="">Все модули</option>
+                    {% for m in modules %}
+                    <option value="{{ m }}" {% if filter_module == m %}selected{% endif %}>{{ m }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary"><i class="ti ti-search"></i></button>
+                <a href="/logs" class="btn btn-outline-secondary">Сбросить</a>
+                <a href="/logs/export" class="btn btn-outline-secondary"><i class="ti ti-download me-1"></i>Экспорт</a>
+            </div>
+            <div class="col-auto ms-auto">
+                <form method="post" action="/logs/clear" class="d-inline">
+                    <input type="hidden" name="days" value="7">
+                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Удалить логи старше 7 дней?')">Очистить старые</button>
+                </form>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h3 class="card-title">Логи ({{ logs|length }})</h3></div>
+    <div class="card-body">
+        {% if logs %}
+        <div class="table-responsive">
+            <table class="table table-vcenter">
+                <thead>
+                <tr>
+                    <th>Время</th>
+                    <th>Уровень</th>
+                    <th>Модуль</th>
+                    <th>Описание</th>
+                    <th>Статус</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for l in logs %}
+                <tr>
+                    <td class="text-muted small text-nowrap">{{ l.ts[:19] }}</td>
+                    <td>
+                        <span class="badge bg-{{ 'danger' if l.level == 'ERROR' else ('warning' if l.level == 'WARNING' else 'info') }}">
+                            {{ l.level }}
+                        </span>
+                    </td>
+                    <td>{{ l.module }}</td>
+                    <td>{{ l.message[:120] }}</td>
+                    <td>
+                        <span class="badge bg-{{ 'success' if l.status == 'resolved' else 'secondary' }}">
+                            {{ "Решено" if l.status == 'resolved' else "Новое" }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if l.status != 'resolved' %}
+                        <form method="post" action="/logs/resolve" class="d-inline">
+                            <input type="hidden" name="log_id" value="{{ l.id }}">
+                            <button type="submit" class="btn btn-outline-success btn-sm" title="Отметить решённым"><i class="ti ti-check"></i></button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">Логов нет</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReplyHelper — умный помощник для поддержки</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2481cc;
+            --primary-dark: #1a5f99;
+            --bg: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text: #1a1a2e;
+            --text-muted: #6c757d;
+            --border: #e9ecef;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .header-btn {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .header-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: color-mix(in srgb, var(--primary) 10%, transparent);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 14px 28px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            padding: 14px 28px;
+            background: var(--bg-secondary);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+            transform: translateY(-1px);
+        }
+
+        /* Features */
+        .features {
+            padding: 60px 0;
+            background: var(--bg-secondary);
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .features-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-bottom: 48px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: color-mix(in srgb, var(--primary) 10%, transparent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* How it works */
+        .how-it-works {
+            padding: 80px 0;
+        }
+
+        .how-it-works-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 48px;
+        }
+
+        .steps {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            text-align: center;
+            max-width: 250px;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 auto 16px;
+        }
+
+        .step h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* CTA */
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            text-align: center;
+            color: #fff;
+        }
+
+        .cta h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .cta p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .telegram-login-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: #fff;
+            color: var(--primary);
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.15s, box-shadow 0.2s;
+        }
+
+        .telegram-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .telegram-login-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">R</div>
+                ReplyHelper
+            </a>
+            <a href="#login" class="header-btn">Войти</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">Инструмент для сотрудников поддержки</div>
+            <h1>Быстрые ответы для клиентов</h1>
+            <p>ReplyHelper помогает находить информацию и формировать ответы клиентам за секунды. Справочник готовых ответов с AI-подбором.</p>
+            <div class="hero-actions">
+                <a href="/app" class="btn-primary">Открыть справочник</a>
+                <a href="#features" class="btn-secondary">Узнать больше</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="features-title">Возможности системы</h2>
+            <p class="features-subtitle">Всё что нужно для эффективной работы с клиентами</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#128218;</div>
+                    <h3>Справочник готовых ответов</h3>
+                    <p>База проверенных ответов на частые вопросы клиентов. Всегда актуальная информация под рукой.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#129302;</div>
+                    <h3>AI-подбор ответа</h3>
+                    <p>Вставьте сообщение клиента — система подберёт подходящий ответ из справочника автоматически.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128100;</div>
+                    <h3>Личный справочник</h3>
+                    <p>Создавайте свои шаблоны ответов и используйте их вместе с общим справочником.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#11088;</div>
+                    <h3>Избранные ответы</h3>
+                    <p>Отмечайте часто используемые ответы как избранные для быстрого доступа.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128203;</div>
+                    <h3>Копирование в один клик</h3>
+                    <p>Нажмите кнопку — ответ скопирован. Вставьте в чат и отправьте клиенту.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128269;</div>
+                    <h3>Поиск по базе знаний</h3>
+                    <p>Быстрый поиск по всем ответам. Найдите нужную информацию за секунды.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="how-it-works-title">Как это работает</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Войдите через Telegram</h3>
+                    <p>Быстрая авторизация без регистрации. Ваши шаблоны синхронизируются автоматически.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Вставьте сообщение клиента</h3>
+                    <p>Скопируйте вопрос клиента и вставьте в поле поиска.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Получите готовый ответ</h3>
+                    <p>AI подберёт лучший ответ из справочника. Скопируйте и отправьте.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta" id="login">
+        <div class="container">
+            <h2>Готовы начать?</h2>
+            <p>Войдите через Telegram и получите доступ ко всем возможностям ReplyHelper</p>
+            <div id="telegram-login" style="display:flex;justify-content:center;margin-top:8px;">
+                <script async src="https://telegram.org/js/telegram-widget.js?22"
+                    data-telegram-login="{{ bot_username }}"
+                    data-size="large"
+                    data-auth-url="/auth/telegram/callback"
+                    data-request-access="write">
+                </script>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ReplyHelper. Инструмент для сотрудников поддержки.</p>
+            <p style="margin-top:8px;font-size:12px;"><a href="/dashboard" style="color:var(--text-muted);">Админ-панель</a></p>
+        </div>
+    </footer>
+</body>
+</html>

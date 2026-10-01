@@ -1,0 +1,12 @@
+.env
+*.session
+*.session-journal
+__pycache__/
+*.pyc
+logs/*.log
+credentials/
+storage/data.db
+storage/data.db-journal
+storage/data.db-wal
+.venv/
+.idea/

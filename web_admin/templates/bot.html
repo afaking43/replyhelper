@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Подключение бота — AI Bot Admin{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header"><h3 class="card-title">Статус подключения</h3></div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <span>🤖 Помощник</span>
+                    <span class="badge bg-{{ 'success' if assistant_on else 'danger' }}">
+                        {{ "Работает" if assistant_on else "Выключен" }}
+                    </span>
+                </div>
+                <form method="post" action="/bot/toggle-assistant">
+                    <button type="submit" class="btn btn-{{ 'danger' if assistant_on else 'success' }} btn-sm">
+                        {{ "Выключить" if assistant_on else "Включить" }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header"><h3 class="card-title">Подключить бота по токену</h3></div>
+            <div class="card-body">
+                <p class="text-muted small">Введите токен бота от @BotFather для подключения.</p>
+                {% if flash %}
+                <div class="alert alert-{{ flash_type or 'info' }}">{{ flash }}</div>
+                {% endif %}
+                <form method="post" action="/bot/connect-token" id="token-form">
+                    <div class="mb-3">
+                        <label class="form-label">Токен бота</label>
+                        <div class="input-group">
+                            <input type="text" name="bot_token" id="bot-token" class="form-control {% if current_token %}bg-light text-muted{% endif %}" placeholder="123456789:ABCdefGHIjklMNOpqrsTUVwxyz" value="{{ current_token }}" required {% if current_token %}readonly{% endif %}>
+                            {% if current_token %}
+                            <button type="button" class="btn btn-outline-secondary" id="edit-btn" onclick="toggleEdit()">Редактировать</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm" id="submit-btn">{{ "Сохранить" if current_token else "Подключить" }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header"><h3 class="card-title">Подключённые аккаунты</h3></div>
+            <div class="card-body">
+                {% if creds %}
+                <div class="table-responsive">
+                    <table class="table table-vcenter">
+                        <thead><tr><th>User ID</th><th>Телефон</th><th>Статус</th><th>Последняя активность</th></tr></thead>
+                        <tbody>
+                        {% for c in creds %}
+                        <tr>
+                            <td>{{ c.user_id }}</td>
+                            <td>{{ c.phone }}</td>
+                            <td><span class="badge bg-{{ 'success' if c.activated else 'danger' }}">{{ "Активен" if c.activated else "Неактивен" }}</span></td>
+                            <td class="text-muted">{{ c.get("last_activity", "—") }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted mb-0">Нет подключённых аккаунтов</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function toggleEdit() {
+    const input = document.getElementById('bot-token');
+    const btn = document.getElementById('edit-btn');
+    if (input.readOnly) {
+        input.readOnly = false;
+        input.classList.remove('bg-light', 'text-muted');
+        input.focus();
+        btn.textContent = 'Отмена';
+    } else {
+        input.readOnly = true;
+        input.classList.add('bg-light', 'text-muted');
+        btn.textContent = 'Редактировать';
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Аналитика — AI Bot Admin{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <select name="period" class="form-select" onchange="this.form.submit()">
+                    <option value="today" {% if period == 'today' %}selected{% endif %}>Сегодня</option>
+                    <option value="yesterday" {% if period == 'yesterday' %}selected{% endif %}>Вчера</option>
+                    <option value="7days" {% if period == '7days' %}selected{% endif %}>7 дней</option>
+                    <option value="30days" {% if period == '30days' %}selected{% endif %}>30 дней</option>
+                    <option value="month" {% if period == 'month' %}selected{% endif %}>Этот месяц</option>
+                    <option value="custom" {% if period == 'custom' %}selected{% endif %}>Свой период</option>
+                </select>
+            </div>
+            {% if period == 'custom' %}
+            <div class="col-auto">
+                <input type="date" name="start" class="form-control" value="{{ start[:10] }}">
+            </div>
+            <div class="col-auto">
+                <input type="date" name="end" class="form-control" value="{{ end[:10] }}">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Применить</button>
+            </div>
+            {% endif %}
+            <div class="col-auto ms-auto">
+                <a href="/analytics/export?period={{ period }}" class="btn btn-outline-secondary"><i class="ti ti-download me-1"></i>Экспорт</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="text-muted small">Пользователи</div>
+                <div class="h1 mb-0">{{ user_count }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="text-muted small">Подписчики</div>
+                <div class="h1 mb-0">{{ sub_count }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="text-muted small">Входы на сайт</div>
+                <div class="h1 mb-0 text-primary">{{ summary.website_logins }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="text-muted small">Ошибки</div>
+                <div class="h1 mb-0 {% if summary.errors > 0 %}text-danger{% endif %}">{{ summary.errors }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if activity_data %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">Активность по дням</h3>
+    </div>
+    <div class="card-body">
+        <canvas id="activityChart" height="100"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    const ctx = document.getElementById('activityChart').getContext('2d');
+    const activityData = {{ activity_data | tojson }};
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: activityData.map(d => d.date),
+            datasets: [
+                {
+                    label: 'Входы на сайт',
+                    data: activityData.map(d => d.logins),
+                    borderColor: '#2481cc',
+                    backgroundColor: 'rgba(36, 129, 204, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Сообщения',
+                    data: activityData.map(d => d.incoming),
+                    borderColor: '#4caf50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+
+{% endblock %}

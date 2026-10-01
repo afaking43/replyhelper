@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Стандартные значения — AI Bot Admin{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Start Message</h3>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small">Приветствия, на которые бот отвечает ответом-приветствием.</p>
+                {% for g in greetings %}
+                <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+                    <div>
+                        <strong>{{ g.phrase }}</strong>
+                        <div class="text-muted small">→ {{ g.reply }}</div>
+                    </div>
+                    <form method="post" action="/standards/greeting/delete">
+                        <input type="hidden" name="greeting_id" value="{{ g.id }}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Удалить?')"><i class="ti ti-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+                <hr>
+                <form method="post" action="/standards/greeting/add">
+                    <div class="mb-2"><input type="text" name="phrase" class="form-control form-control-sm" placeholder="Фраза (напр. добрый день)" required></div>
+                    <div class="mb-2"><input type="text" name="reply" class="form-control form-control-sm" placeholder="Ответ (напр. Добрый день!)" required></div>
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">End Message</h3>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small">Слова благодарности, на которые бот не создаёт задачу.</p>
+                {% for t in thanks %}
+                <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+                    <span>{{ t.phrase }}</span>
+                    <form method="post" action="/standards/thanks/delete">
+                        <input type="hidden" name="thanks_id" value="{{ t.id }}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Удалить?')"><i class="ti ti-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+                <hr>
+                <form method="post" action="/standards/thanks/add">
+                    <div class="mb-2"><input type="text" name="phrase" class="form-control form-control-sm" placeholder="Фраза (напр. спасибо)" required></div>
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Без ответа</h3>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small">Фразы, на которые бот полностью игнорирует.</p>
+                {% for n in no_action %}
+                <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+                    <span>{{ n.phrase }}</span>
+                    <form method="post" action="/standards/no-action/delete">
+                        <input type="hidden" name="phrase_id" value="{{ n.id }}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Удалить?')"><i class="ti ti-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+                <hr>
+                <form method="post" action="/standards/no-action/add">
+                    <div class="mb-2"><input type="text" name="phrase" class="form-control form-control-sm" placeholder="Фраза" required></div>
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Админ-панель{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    {% block head %}{% endblock %}
+    <style>
+        :root { --tblr-primary: #206bc4; }
+        body { margin: 0; }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 260px;
+            background: #1e293b;
+            z-index: 100;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,.05);
+        }
+        .sidebar .nav-link {
+            color: rgba(255,255,255,.7);
+            padding: .5rem 1rem;
+            border-radius: 4px;
+            margin: 1px 8px;
+            font-size: .875rem;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: #fff;
+            background: rgba(255,255,255,.1);
+        }
+        .sidebar .nav-section-title {
+            color: rgba(255,255,255,.4);
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            padding: .75rem 1rem .25rem;
+        }
+        .sidebar-brand {
+            display: block;
+            padding: 1rem;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+        .page-wrapper {
+            margin-left: 260px;
+            min-height: 100vh;
+        }
+        .page-header {
+            background: #fff;
+            border-bottom: 1px solid #e6e7e9;
+            padding: .75rem 1.5rem;
+        }
+        .page-content {
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<aside class="sidebar">
+    <a class="sidebar-brand" href="/dashboard">
+        <i class="ti ti-robot me-2"></i> AI Bot Admin
+    </a>
+    <nav class="nav flex-column py-2">
+        <a class="nav-link {% if active_page == 'dashboard' %}active{% endif %}" href="/dashboard">
+            <i class="ti ti-dashboard me-2"></i> Dashboard
+        </a>
+        <a class="nav-link {% if active_page == 'bot' %}active{% endif %}" href="/bot">
+            <i class="ti ti-plug me-2"></i> Подключение бота
+        </a>
+
+        <div class="nav-section-title">Стандарты</div>
+        <a class="nav-link {% if active_page == 'standards' %}active{% endif %}" href="/standards">
+            <i class="ti ti-message me-2"></i> Start / End Message
+        </a>
+        <a class="nav-link {% if active_page == 'library' %}active{% endif %}" href="/library">
+            <i class="ti ti-book me-2"></i> Справочник
+        </a>
+
+        <div class="nav-section-title">Данные</div>
+        <a class="nav-link {% if active_page == 'users' %}active{% endif %}" href="/users">
+            <i class="ti ti-users me-2"></i> Пользователи
+        </a>
+        <a class="nav-link {% if active_page == 'subscribers' %}active{% endif %}" href="/subscribers">
+            <i class="ti ti-user-check me-2"></i> Подписчики
+        </a>
+
+        <div class="nav-section-title">Мониторинг</div>
+        <a class="nav-link {% if active_page == 'analytics' %}active{% endif %}" href="/analytics">
+            <i class="ti ti-chart-bar me-2"></i> Аналитика
+        </a>
+        <a class="nav-link {% if active_page == 'logs' %}active{% endif %}" href="/logs">
+            <i class="ti ti-alert-triangle me-2"></i> Ошибки и логи
+        </a>
+
+        <div class="nav-section-title">Система</div>
+        <a class="nav-link {% if active_page == 'settings' %}active{% endif %}" href="/settings">
+            <i class="ti ti-settings me-2"></i> Настройки
+        </a>
+
+        <div class="nav-section-title"></div>
+        <a class="nav-link text-danger" href="/logout">
+            <i class="ti ti-logout me-2"></i> Выйти
+        </a>
+    </nav>
+</aside>
+
+<div class="page-wrapper">
+    <header class="page-header">
+        <h1 class="page-title mb-0">{{ page_title }}</h1>
+    </header>
+    <div class="page-content">
+        {% if flash %}
+        <div class="alert alert-{{ flash_type or 'info' }} alert-dismissible">
+            {{ flash }}
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/js/tabler.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

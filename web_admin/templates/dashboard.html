@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — AI Bot Admin{% endblock %}
+
+{% block content %}
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader text-muted">Пользователи</div>
+                </div>
+                <div class="h1 mb-0 mt-2">{{ user_count }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader text-muted">Подписчики</div>
+                </div>
+                <div class="h1 mb-0 mt-2">{{ sub_count }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader text-muted">Сообщений сегодня</div>
+                </div>
+                <div class="h1 mb-0 mt-2">{{ stats.incoming }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader text-muted">Ошибки сегодня</div>
+                </div>
+                <div class="h1 mb-0 mt-2 {% if error_today > 0 %}text-danger{% endif %}">{{ error_today }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader text-muted">Входы на сайт сегодня</div>
+                </div>
+                <div class="h1 mb-0 mt-2">{{ stats.website_logins }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h3 class="card-title">Статус системы</h3></div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Помощник</span>
+                    <span class="badge {% if assistant_on %}bg-success{% else %}bg-danger{% endif %}">
+                        {{ "Работает" if assistant_on else "Выключен" }}
+                    </span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Сообщений сегодня</span>
+                    <span class="text-muted">{{ stats.incoming }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Входы на сайт сегодня</span>
+                    <span class="text-muted">{{ stats.website_logins }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span>Ошибок сегодня</span>
+                    <span class="text-muted {% if error_today > 0 %}text-danger{% endif %}">{{ error_today }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header"><h3 class="card-title">Последние ошибки</h3></div>
+            <div class="card-body">
+                {% if recent_errors %}
+                <div class="table-responsive">
+                    <table class="table table-vcenter">
+                        <thead><tr><th>Время</th><th>Уровень</th><th>Модуль</th><th>Описание</th></tr></thead>
+                        <tbody>
+                        {% for e in recent_errors[:5] %}
+                        <tr>
+                            <td class="text-muted small">{{ e.ts[:16] }}</td>
+                            <td><span class="badge bg-{{ 'danger' if e.level == 'ERROR' else 'warning' }}">{{ e.level }}</span></td>
+                            <td>{{ e.module }}</td>
+                            <td>{{ e.message[:80] }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted mb-0">Ошибок нет</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход — AI Bot Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/css/tabler.min.css">
+</head>
+<body class="d-flex align-items-center justify-content-center" style="min-height:100vh;background:#f5f7fb;">
+<div class="container-xs">
+    <div class="card" style="max-width:400px;margin:0 auto;">
+        <div class="card-body p-4">
+            <h2 class="text-center mb-1"><i class="ti ti-robot me-2"></i>AI Bot</h2>
+            <p class="text-center text-muted mb-4">Админ-панель</p>
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <form method="post" action="/login">
+                <div class="mb-3">
+                    <label class="form-label">Логин</label>
+                    <input type="text" name="login" class="form-control" placeholder="admin" required autofocus>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" name="password" class="form-control" placeholder="Пароль" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Войти</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
