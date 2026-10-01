@@ -24,6 +24,7 @@ from web_admin.app import set_telethon_getter
 
 def setup_logging() -> None:
     import io
+    os.makedirs("logs", exist_ok=True)
     stdout_handler = logging.StreamHandler(
         io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
         if hasattr(sys.stdout, "buffer")
