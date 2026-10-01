@@ -135,8 +135,11 @@ async def main() -> None:
     logger.info("Total watched chats across all users: %s", total_chats)
     logger.info("Active Telethon accounts: %s", len(user_clients))
     logger.info("Web admin panel: http://0.0.0.0:%s", config.web_port)
+    logger.info("ADMIN_USER_ID from DB: %s", config.admin_user_id)
 
     bot_token = settings_store.get_bot_token() or config.admin_bot_token
+    logger.info("Bot token source: settings_store=%s, config=%s",
+                bool(settings_store.get_bot_token()), bool(config.admin_bot_token))
 
     if bot_token:
         try:
@@ -159,22 +162,32 @@ async def main() -> None:
         except Exception as exc:
             logger.warning("Failed to send startup notification: %s", exc)
     else:
-        logger.warning("Admin bot token not set — skipping startup notification")
+        logger.error("=" * 60)
+        logger.error("BOT TOKEN: NOT SET — Admin bot will NOT start")
+        logger.error("Set ADMIN_BOT_TOKEN in Railway Variables")
+        logger.error("=" * 60)
 
     set_telethon_getter(get_client)
 
     tasks = [start_web_admin()]
+    logger.info("Task started: web_admin (uvicorn)")
 
     # Запускаем loop для каждого пользовательского клиента
     for uid, client in user_clients.items():
         tasks.append(run_client_forever(client))
+        logger.info("Task started: Telethon client for user %s", uid)
 
     if global_telethon_client:
         tasks.append(run_client_forever(global_telethon_client))
+        logger.info("Task started: global Telethon client")
 
     if bot_token:
         tasks.append(start_admin_bot(get_client))
+        logger.info("Task started: admin_bot (aiogram)")
 
+    logger.info("=" * 60)
+    logger.info("Total async tasks: %d", len(tasks))
+    logger.info("=" * 60)
     await asyncio.gather(*tasks)
 
 

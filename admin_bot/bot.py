@@ -3389,9 +3389,12 @@ async def start_admin_bot(telethon_client_getter) -> None:
 
     token = settings_store.get_bot_token() or config.admin_bot_token
     if not token:
-        logger.warning("Admin bot token is not set. Admin bot will not start.")
+        logger.error("Admin bot token is not set. Admin bot will not start.")
         return
 
+    logger.info("=" * 60)
+    logger.info("ADMIN BOT: Starting polling...")
+    logger.info("=" * 60)
     _active_bot = Bot(token=token)
     _active_dp = Dispatcher()
     register_admin_handlers(_active_dp, telethon_client_getter)
